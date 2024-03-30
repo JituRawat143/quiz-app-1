@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education Quiz App</title>
+<style>
+/* CSS styles for the quiz app */
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(180, 132, 224);
+    text-align: center;
+    
+}
+section.bg{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(201, 199, 199);
+    display: flex;                                                                                                
+    justify-content: center;
+    align-items: center;
+
+}
+
+.container {
+    height: 70vh;
+    width: 70vw;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #40076e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
+
+}
+
+h1 {
+    color: #333;
+}
+
+#question {
+    margin-bottom: 20px;
+    font-size: 3vw;
+    color: beige;
+    margin-top: -5vh;
+}
+
+button {
+    background-color: #008CBA;
+    color: white;
+    margin: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005f7f;
+}
+#heading{
+    color: aliceblue;
+    font-size: 400%;
+}
+</style>
+</head>
+<body>
+    <section class="bg">
+<div class="container">
+    <h1 id="heading">Education Quiz App</h1>
+    <div id="quiz">
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="nextButton">Next</button>
+        <button id="playAgainButton" style="display: none;">Play Again</button>
+        <button id="showPointsButton">Show Points</button>
+        <button id="exitButton">Exit</button>
+    </div>
+    <div id="result" style="display: none;">
+        <h2>Quiz Result</h2>
+        <p id="score"></p>
+    </div>
+</div>
+</section>
+<script>
+// JavaScript code for the quiz app
+var questions = [
+    { question: "what is capital of india", options: ["mumbai", "delhi", "chennai", "gurgram"], answer: "delhi" },
+    { question: "what is the capital of hariyana", options: ["mumbai", "delhi", "chennai", "gurgram"], answer: "gurugram" },
+    { question: "What is the capital of France?", options: ["A) Paris", "B) London", "C) Rome", "D) Berlin"], answer: "A) Paris" },
+    {
+        question: "Who wrote 'Romeo and Juliet'?",
+        options: ["A) William Shakespeare", "B) Jane Austen", "C) Charles Dickens", "D) Mark Twain"],
+        answer: "A) William Shakespeare"
+    },
+    {
+        question: "What is the chemical symbol for water?",
+        options: ["A) H2O", "B) CO2", "C) O2", "D) N2"],
+        answer: "A) H2O"
+    },
+    {
+        question: "What is the largest planet in our solar system?",
+        options: ["A) Jupiter", "B) Saturn", "C) Earth", "D) Mars"],
+        answer: "A) Jupiter"
+    },
+    {
+        question: "Who discovered gravity?",
+        options: ["A) Isaac Newton", "B) Albert Einstein", "C) Galileo Galilei", "D) Nikola Tesla"],
+        answer: "A) Isaac Newton"
+    },
+    {
+        question: "What is the powerhouse of the cell?",
+        options: ["A) Nucleus", "B) Mitochondria", "C) Ribosome", "D) Chloroplast"],
+        answer: "B) Mitochondria"
+    },
+    {
+        question: "Which planet is known as the 'Red Planet'?",
+        options: ["A) Venus", "B) Mars", "C) Mercury", "D) Neptune"],
+        answer: "B) Mars"
+    },
+    {
+        question: "What is the chemical formula for table salt?",
+        options: ["A) NaCl", "B) H2O", "C) CO2", "D) O2"],
+        answer: "A) NaCl"
+    },
+    {
+        question: "Who painted the Mona Lisa?",
+        options: ["A) Leonardo da Vinci", "B) Pablo Picasso", "C) Vincent van Gogh", "D) Michelangelo"],
+        answer: "A) Leonardo da Vinci"
+    },
+    {
+        question: "What is the square root of 144?",
+        options: ["A) 12", "B) 10", "C) 15", "D) 20"],
+        answer: "A) 12"
+    }
+];
+
+var currentQuestionIndex = 0;
+var score = 0;
+
+var questionElement = document.getElementById("question");
+var optionsElement = document.getElementById("options");
+var nextButton = document.getElementById("nextButton");
+var playAgainButton = document.getElementById("playAgainButton");
+var showPointsButton = document.getElementById("showPointsButton");
+var exitButton = document.getElementById("exitButton");
+var resultElement = document.getElementById("result");
+var scoreElement = document.getElementById("score");
+
+function displayQuestion() {
+    var currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    optionsElement.innerHTML = "";
+    currentQuestion.options.forEach(function(option, index) {
+        var optionButton = document.createElement("button");
+        optionButton.textContent = option;
+        optionButton.addEventListener("click", function() {
+            checkAnswer(option);
+        });
+        optionsElement.appendChild(optionButton);
+    });
+}
+
+function checkAnswer(selectedOption) {
+    var currentQuestion = questions[currentQuestionIndex];
+    if (selectedOption === currentQuestion.answer) {
+        score++;
+    }
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+    } else {
+        displayResult();
+    }
+}
+
+function displayResult() {
+    resultElement.style.display = "block";
+    questionElement.style.display = "none";
+    optionsElement.style.display = "none";
+    nextButton.style.display = "none";
+    playAgainButton.style.display = "block";
+    showPointsButton.style.display = "block";
+    exitButton.style.display = "block";
+    scoreElement.textContent = "Your score: " + score;
+}
+
+function playAgain() {
+    currentQuestionIndex = 0;
+    score = 0;
+    resultElement.style.display = "none";
+    questionElement.style.display = "block";
+    optionsElement.style.display = "block";
+    nextButton.style.display = "block";
+    playAgainButton.style.display = "none";
+    showPointsButton.style.display = "none";
+    exitButton.style.display = "none";
+    displayQuestion();
+}
+
+function showPoints() {
+    alert("Your score: " + score);
+}
+
+function exit() {
+    // Close the browser window or redirect to another page
+}
+
+nextButton.addEventListener("click", displayQuestion);
+playAgainButton.addEventListener("click", playAgain);
+showPointsButton.addEventListener("click", showPoints);
+exitButton.addEventListener("click", exit);
+
+// Display the first question
+displayQuestion();
+</script>
+</body>
+</html>
